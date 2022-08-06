@@ -4,6 +4,11 @@ Calendar API is a simple API to create and match slots between interviewers and 
 
 It's built in Java 11 with Spring boot.
 
+## API Docs
+
+The API documentation is available at [this page](https://documenter.getpostman.com/view/15348183/VUjMnQpC).
+There you can find all the available endpoints and examples of requests/responses.
+
 ## How to install it and run it locally?
 
 To run the application locally, you must have Docker installed.
@@ -27,10 +32,10 @@ by using some database client (e.g. DBeaver) using the following parameters:
 
 These are the default values defined in the docker-compose file.
 
-## API Docs
+#### Dummy data
 
-The API documentation is available at [this page](https://documenter.getpostman.com/view/15348183/VUjMnQpC).
-There you can find all the available endpoints and examples of requests/responses.
+When the API is started locally, a SQL script runs to insert some data in the database, 
+so you can query the API right away, searching by the ids declared in the script.
 
 ## Project structure
 
@@ -53,3 +58,8 @@ The main structure of the project is organized as the tree bellow:
 And the flow of the requests is a basic `Controller ➜ Service ➜ Repository`, like the following example:
 
 ![Sequence diagram example](assets/seqdiagram.png)
+
+## Continuous integration
+
+This repo is set up with a GitHub Action to build and test the application 
+when a PR to master is opened or there is a push to master.   

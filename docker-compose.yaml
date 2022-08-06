@@ -27,6 +27,7 @@ services:
     volumes:
       - myapp-data:/data/db
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/dummy_data.sql:/docker-entrypoint-initdb.d/dummy_data.sql
     networks:
       - backend-network
 
