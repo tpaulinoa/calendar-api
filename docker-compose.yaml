@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      target: BUILD_IMAGE
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-dev:5432/myappdatabase
+    depends_on:
+      - postgres-dev
+    networks:
+      - backend-network
+    command: /app/gradlew bootRun
+
+  postgres-dev:
+    image: postgres:14.3
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=myappdatabase
+    volumes:
+      - myapp-data:/data/db
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    networks:
+      - backend-network
+
+  tests:
+    build:
+      context: .
+      target: BUILD_IMAGE
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-test:5432/myappdatabase
+    depends_on:
+      - postgres-test
+    networks:
+      - backend-network
+    command: /app/gradlew clean test --info
+
+  postgres-test:
+    image: postgres:14.3
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=myappdatabase
+    volumes:
+      - myapp-data:/data/db
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    networks:
+      - backend-network
+
+volumes:
+  myapp-data: {}
+
+networks:
+  backend-network:
+    driver: bridge
