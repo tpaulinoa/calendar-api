@@ -38,4 +38,28 @@ class InterviewerMapperTest {
         Candidate entity = mapper.mapDTOToEntity(null);
         assertNull(entity);
     }
+
+    @Test
+    void mapEntityToDTO_ReturnsADTO_When_ANotNullEntityIsGiven() {
+        Candidate entity = new Candidate();
+        entity.setName("Alice");
+        entity.setEmail("alice@example.com");
+        entity.setPhone("1234567890");
+        entity.setId("123");
+        entity.setLinkedinProfile("linkedin.com/alice");
+
+        CandidateDTO dto = mapper.mapEntityToDTO(entity);
+
+        assertEquals(entity.getName(), dto.getName());
+        assertEquals(entity.getEmail(), dto.getEmail());
+        assertEquals(entity.getPhone(), dto.getPhone());
+        assertEquals(entity.getLinkedinProfile(), dto.getLinkedinProfile());
+        assertEquals(entity.getId(), dto.getId());
+    }
+
+    @Test
+    void mapEntityToDTO_ReturnsNull_When_ANullEntityIsGiven() {
+        CandidateDTO dto = mapper.mapEntityToDTO(null);
+        assertNull(dto);
+    }
 }
